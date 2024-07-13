@@ -1,5 +1,8 @@
 const express = require('express') //imports express 
+const bodyParser = require('body-parser')
 const app = express() //this calls the express function which creates an instance of express application
+const Product = require('./models/productmodel.js');
+app.use(bodyParser.json());
 const mongoose = require('mongoose');
 
 //MongoDB URI
@@ -13,8 +16,32 @@ app.get('/', (req, res) => {
     res.send("Hello from node API Server");
 });
 
+app.get('/api/products', async (req, res) => {
+    try{
+        const products = await Product.find({});
+        res.status(200).json(products);
+    }
+
+    catch(error){
+        res.status(500).json({message: error.message});
+    }
+});
+
+app.post('/api/products', async(req,res) =>{
+    try{
+        const product = await Product.create(req.body);
+        res.status(200).json(product);
+    }
+
+    catch(error){
+        res.status(500).json({message: error.message});
+    }
+});
+
 //connect to db 
-mongoose.connect(dbURI)
+mongoose.connect(dbURI,{
+    dbName: "crud"
+  })
 .then(() =>{
     console.log('Connected to MongoDB');
 })

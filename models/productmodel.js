@@ -30,6 +30,6 @@ const ProductSchema = mongoose.Schema(
 
 );
 
-const Product = mongoose.model("Product", ProductSchema);
+const Product = mongoose.model("Product", ProductSchema); //will add a 's' to the product on its own
 
 module.exports = Product;
